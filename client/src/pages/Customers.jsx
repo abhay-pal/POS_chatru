@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BookOpen, Pencil, Printer } from 'lucide-react';
-import { api, fmt, fmtDay } from '../api.js';
+import { api, fmt, fmtDay, withBase } from '../api.js';
 import { Modal, Field, useToast } from '../components/ui.jsx';
 import { LedgerModal, ReceiveModal } from './Udhaar.jsx';
 
@@ -40,7 +40,7 @@ export default function Customers() {
                     <div className="row-flex" style={{ gap: 5, flexWrap: 'nowrap' }}>
                       <button className="btn sm" onClick={() => setLedgerFor(c)}><BookOpen size={14} /></button>
                       <button className="btn sm" onClick={() => setEdit(c)}><Pencil size={14} /></button>
-                      <button className="btn sm" onClick={() => window.open(`/print/statement/${c.id}`, '_blank')}><Printer size={14} /></button>
+                      <button className="btn sm" onClick={() => window.open(withBase(`/print/statement/${c.id}`), '_blank')}><Printer size={14} /></button>
                       {c.balance > 0 && <button className="btn sm primary" onClick={() => setReceiveFor(c)}>Receive</button>}
                     </div>
                   </td>

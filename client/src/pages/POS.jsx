@@ -3,7 +3,7 @@ import {
   Search, Pause, FolderOpen, Trash2, UserPlus, X, Banknote, Smartphone,
   CreditCard, HandCoins, SplitSquareHorizontal, Printer, CheckCircle2, Clock
 } from 'lucide-react';
-import { api, fmt, qty3, showQty } from '../api.js';
+import { api, fmt, qty3, showQty, withBase } from '../api.js';
 import { Modal, Field, useToast } from '../components/ui.jsx';
 import { useApp } from '../App.jsx';
 
@@ -574,7 +574,7 @@ function DoneModal({ sale, onClose }) {
   return (
     <Modal title="Sale Completed ✅" onClose={onClose} footer={<>
       <button className="btn" onClick={onClose}>New Sale</button>
-      <button className="btn primary" onClick={() => window.open(`/print/receipt/${sale.id}`, '_blank', 'width=450,height=700')}>
+      <button className="btn primary" onClick={() => window.open(withBase(`/print/receipt/${sale.id}`), '_blank', 'width=450,height=700')}>
         <Printer size={16} /> Print Receipt
       </button>
     </>}>

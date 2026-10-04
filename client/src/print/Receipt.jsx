@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { api, fmt, showQty } from '../api.js';
+import { api, fmt, showQty, assetUrl } from '../api.js';
 
 export default function PrintReceipt() {
   const { id } = useParams();
@@ -32,7 +32,7 @@ export default function PrintReceipt() {
 
       <div className={`receipt w${size}`}>
         <div className="c">
-          {business.logo && <img className="rlogo" src={business.logo} alt="" />}
+          {business.logo && <img className="rlogo" src={assetUrl(business.logo)} alt="" />}
           <div className="b xl">{business.name?.toUpperCase()}</div>
           {business.tagline && <div>{business.tagline}</div>}
           <div>{business.address}</div>

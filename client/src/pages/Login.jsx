@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../App.jsx';
+import { withBase } from '../api.js';
 
 export default function Login() {
   const { login } = useApp();
@@ -21,9 +22,15 @@ export default function Login() {
   return (
     <div className="login-wrap">
       <form className="login-card" onSubmit={submit}>
-        <img src="/logo.png" alt="Chatru Halwai" />
+        <img src={withBase("/logo.png")} alt="Chatru Halwai" />
         <h1>Chatru Halwai</h1>
         <div className="sub">Sweet Shop POS</div>
+        {typeof window !== 'undefined' && window.__POS_DEMO__ && (
+          <div style={{ background: '#fff7e0', border: '1px solid var(--gold, #d4a017)', borderRadius: 8, padding: '6px 10px', fontSize: 12, marginBottom: 12 }}>
+            🌐 <b>Live Demo</b> — pura POS aapke browser me chal raha hai (SQLite WASM).
+            Data sirf is browser me save hota hai.
+          </div>
+        )}
         <div className="field" style={{ textAlign: 'left' }}>
           <label>Username</label>
           <input className="input" value={username} onChange={e => setUsername(e.target.value)} autoFocus placeholder="owner / manager / ramesh" />

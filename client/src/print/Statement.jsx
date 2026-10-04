@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { api, fmt, fmtDay, showQty } from '../api.js';
+import { api, fmt, fmtDay, showQty, assetUrl } from '../api.js';
 
 export default function PrintStatement() {
   const { customerId } = useParams();
@@ -41,7 +41,7 @@ export default function PrintStatement() {
               <div>{business.address} · Ph: {business.phone}</div>
               {business.gstin && <div>GSTIN: {business.gstin}</div>}
             </div>
-            {business.logo && <img src={business.logo} style={{ width: 70, height: 70 }} alt="" />}
+            {business.logo && <img src={assetUrl(business.logo)} style={{ width: 70, height: 70 }} alt="" />}
           </div>
           <h2 style={{ margin: '0 0 4px' }}>Udhaar Statement (Khata)</h2>
           <table style={{ marginBottom: 12, border: 0 }}>

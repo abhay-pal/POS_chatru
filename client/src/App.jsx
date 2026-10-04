@@ -5,7 +5,7 @@ import {
   Wheat, Truck, Store, Wallet, Trash2, BarChart3, PieChart, UserCog, Settings as SettingsIcon,
   Menu, LogOut, PanelLeftClose
 } from 'lucide-react';
-import { api, getToken, setToken } from './api.js';
+import { api, getToken, setToken, withBase, assetUrl, BASE } from './api.js';
 import { ToastProvider } from './components/ui.jsx';
 
 import Login from './pages/Login.jsx';
@@ -82,7 +82,7 @@ function Layout({ children }) {
     <div className={`app ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'sb-open' : ''}`}>
       <aside className="sidebar" onClick={(e) => { if (mobileOpen && e.target === e.currentTarget) setMobileOpen(false); }}>
         <div className="sb-head">
-          <img src={business?.logo || '/logo.png'} alt="logo" />
+          <img src={assetUrl(business?.logo || '/logo.png')} alt="logo" />
           <div className="sb-title">
             <b>{business?.name || 'Sweet Shop POS'}</b>
             <span>Sweet Shop POS</span>
@@ -151,7 +151,7 @@ function Shell() {
     try { setBusiness(await api('/business')); } catch { /* non-fatal; layout falls back to defaults */ }
     return res;
   };
-  const logout = () => { setToken(null); setUser(null); setPerms([]); window.location.href = '/login'; };
+  const logout = () => { setToken(null); setUser(null); setPerms([]); window.location.href = withBase('/login'); };
 
   const ctx = useMemo(() => ({ user, perms, business, setBusiness, login, logout, hasPerm }), [user, perms, business]);
 
@@ -197,7 +197,7 @@ function Shell() {
 export default function App() {
   return (
     <ToastProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={BASE || '/'}>
         <Shell />
       </BrowserRouter>
     </ToastProvider>

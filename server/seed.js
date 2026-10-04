@@ -507,7 +507,7 @@ function seed() {
 }
 
 // CLI: `npm run seed`
-if (process.argv[1] && process.argv[1].endsWith('seed.js')) {
+if (typeof process !== 'undefined' && process.argv?.[1] && process.argv[1].endsWith('seed.js')) {
   const did = seedIfEmpty();
   if (!did) console.log('Database already has data. Delete data/pos.db to reseed.');
 }

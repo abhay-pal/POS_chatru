@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Printer, Eye, Ban, Undo2 } from 'lucide-react';
-import { api, fmt, fmtDate, presetRange, showQty, STATUS_LABEL } from '../api.js';
+import { api, fmt, fmtDate, presetRange, showQty, STATUS_LABEL, withBase } from '../api.js';
 import { Modal, DateRange, StatusBadge, Field, useToast } from '../components/ui.jsx';
 import { useApp } from '../App.jsx';
 
@@ -70,7 +70,7 @@ export default function SalesHistory() {
                     <div className="row-flex" style={{ gap: 5, flexWrap: 'nowrap' }}>
                       <button className="btn sm" title="View" onClick={() => openView(s.id)}><Eye size={14} /></button>
                       {s.status !== 'held' && s.status !== 'cancelled' && (
-                        <button className="btn sm" title="Reprint" onClick={() => window.open(`/print/receipt/${s.id}?reprint=1`, '_blank', 'width=450,height=700')}><Printer size={14} /></button>
+                        <button className="btn sm" title="Reprint" onClick={() => window.open(withBase(`/print/receipt/${s.id}?reprint=1`), '_blank', 'width=450,height=700')}><Printer size={14} /></button>
                       )}
                     </div>
                   </td>
@@ -91,7 +91,7 @@ export default function SalesHistory() {
             <button className="btn red" onClick={() => cancelBill(view)}><Ban size={15} /> Cancel Bill</button>
           )}
           {view.status !== 'held' && view.status !== 'cancelled' && (
-            <button className="btn primary" onClick={() => window.open(`/print/receipt/${view.id}?reprint=1`, '_blank', 'width=450,height=700')}><Printer size={15} /> Reprint</button>
+            <button className="btn primary" onClick={() => window.open(withBase(`/print/receipt/${view.id}?reprint=1`), '_blank', 'width=450,height=700')}><Printer size={15} /> Reprint</button>
           )}
         </>}>
           <SaleDetail sale={view} />

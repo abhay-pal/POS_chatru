@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { HandCoins, Printer, BookOpen } from 'lucide-react';
-import { api, fmt, fmtDay, fmtDate, showQty } from '../api.js';
+import { api, fmt, fmtDay, fmtDate, showQty, withBase } from '../api.js';
 import { Modal, Field, Stat, useToast } from '../components/ui.jsx';
 import { AddCustomerModal } from './POS.jsx';
 
@@ -52,7 +52,7 @@ export default function Udhaar() {
                     <div className="row-flex" style={{ gap: 6 }}>
                       <button className="btn sm primary" onClick={() => setReceiveFor(c)}>Receive</button>
                       <button className="btn sm" onClick={() => setLedgerFor(c)}><BookOpen size={14} /> Ledger</button>
-                      <button className="btn sm" onClick={() => window.open(`/print/statement/${c.id}`, '_blank')}><Printer size={14} /></button>
+                      <button className="btn sm" onClick={() => window.open(withBase(`/print/statement/${c.id}`), '_blank')}><Printer size={14} /></button>
                     </div>
                   </td>
                 </tr>
@@ -172,7 +172,7 @@ export function LedgerModal({ customer, onClose }) {
 
   return (
     <Modal title={`Ledger — ${customer.name}`} onClose={onClose} size="xl" footer={<>
-      <button className="btn" onClick={() => window.open(`/print/statement/${customer.id}${from || to ? `?from=${from}&to=${to}` : ''}`, '_blank')}>
+      <button className="btn" onClick={() => window.open(withBase(`/print/statement/${customer.id}${from || to ? `?from=${from}&to=${to}` : ''}`), '_blank')}>
         <Printer size={15} /> Print Statement
       </button>
     </>}>

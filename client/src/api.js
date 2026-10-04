@@ -1,6 +1,11 @@
 // API client + shared helpers
 const TOKEN_KEY = 'pos_token';
 
+// ── base-path helpers (GitHub Pages serves the app under /POS_chatru/) ──
+export const BASE = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+export const withBase = (p) => BASE + (p.startsWith('/') ? p : '/' + p);
+export const assetUrl = (p) => (!p || /^(https?:|data:)/.test(p)) ? p : withBase(p);
+
 // Token lives in memory first; browser storage is best-effort only, because
 // embedded/iframe previews (and Safari) can block localStorage entirely.
 let memToken = null;
@@ -36,7 +41,7 @@ export async function api(path, opts = {}) {
   if (res.status === 401 && !path.startsWith('/auth/')) {
     setToken(null);
     // soft redirect, and never loop if we're already on the login page
-    if (!window.location.pathname.startsWith('/login')) window.location.href = '/login';
+    if (!window.location.pathname.startsWith(withBase('/login'))) window.location.href = withBase('/login');
     throw new Error('Session expired — please sign in again');
   }
   const data = await res.json().catch(() => ({}));

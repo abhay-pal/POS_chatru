@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { api, fmt } from '../api.js';
+import { api, fmt, assetUrl } from '../api.js';
 import { Field, useToast } from '../components/ui.jsx';
 import { useApp } from '../App.jsx';
 
@@ -52,7 +52,7 @@ export default function Settings() {
             <Field label="Tagline"><input className="input" value={b.tagline || ''} onChange={e => setB({ ...b, tagline: e.target.value })} /></Field>
             <Field label="Logo URL (shown in sidebar, login & receipts)">
               <div className="row-flex">
-                <img src={b.logo || '/logo.png'} alt="" style={{ width: 44, height: 44, borderRadius: 10, border: '1px solid var(--border)' }} />
+                <img src={assetUrl(b.logo || '/logo.png')} alt="" style={{ width: 44, height: 44, borderRadius: 10, border: '1px solid var(--border)' }} />
                 <input className="input" value={b.logo || ''} onChange={e => setB({ ...b, logo: e.target.value })} />
               </div>
             </Field>
