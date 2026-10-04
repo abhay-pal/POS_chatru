@@ -1,8 +1,28 @@
 // API client + shared helpers
 const TOKEN_KEY = 'pos_token';
 
-export const getToken = () => localStorage.getItem(TOKEN_KEY);
-export const setToken = (t) => t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY);
+// Token lives in memory first; browser storage is best-effort only, because
+// embedded/iframe previews (and Safari) can block localStorage entirely.
+let memToken = null;
+const stores = () => {
+  const out = [];
+  try { if (window.localStorage) out.push(window.localStorage); } catch { /* blocked */ }
+  try { if (window.sessionStorage) out.push(window.sessionStorage); } catch { /* blocked */ }
+  return out;
+};
+export const getToken = () => {
+  if (memToken) return memToken;
+  for (const s of stores()) {
+    try { const t = s.getItem(TOKEN_KEY); if (t) { memToken = t; return t; } } catch { /* ignore */ }
+  }
+  return null;
+};
+export const setToken = (t) => {
+  memToken = t;
+  for (const s of stores()) {
+    try { t ? s.setItem(TOKEN_KEY, t) : s.removeItem(TOKEN_KEY); } catch { /* ignore */ }
+  }
+};
 
 export async function api(path, opts = {}) {
   const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
@@ -13,10 +33,11 @@ export async function api(path, opts = {}) {
     headers,
     body: opts.body != null && typeof opts.body !== 'string' ? JSON.stringify(opts.body) : opts.body
   });
-  if (res.status === 401 && !path.startsWith('/auth/login')) {
+  if (res.status === 401 && !path.startsWith('/auth/')) {
     setToken(null);
-    window.location.href = '/login';
-    throw new Error('Session expired');
+    // soft redirect, and never loop if we're already on the login page
+    if (!window.location.pathname.startsWith('/login')) window.location.href = '/login';
+    throw new Error('Session expired — please sign in again');
   }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) { const e = new Error(data.error || `Request failed (${res.status})`); e.status = res.status; throw e; }

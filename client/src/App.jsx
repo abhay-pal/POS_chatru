@@ -148,7 +148,7 @@ function Shell() {
     const res = await api('/auth/login', { method: 'POST', body: { username, password } });
     setToken(res.token);
     setUser(res.user); setPerms(res.perms);
-    setBusiness(await api('/business'));
+    try { setBusiness(await api('/business')); } catch { /* non-fatal; layout falls back to defaults */ }
     return res;
   };
   const logout = () => { setToken(null); setUser(null); setPerms([]); window.location.href = '/login'; };
