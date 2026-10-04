@@ -1,0 +1,27 @@
+{
+  "name": "sweetshop-pos",
+  "version": "1.0.0",
+  "description": "Sweet Shop POS - configurable Halwai/Mithai shop Point of Sale (first deployment: Chatru Halwai)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seed": "node server/seed.js",
+    "server": "node server/index.js",
+    "client": "vite",
+    "dev": "node server/index.js & vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "recharts": "^2.15.0",
+    "vite": "^5.4.11"
+  }
+}
